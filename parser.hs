@@ -118,13 +118,6 @@ parsePseudo =  do
   value <- parens $ many1 letter
   return $ Pseudo value
 
---parens  :: Parser ()
---parens  = do{ char '('
---            ; parens
---            ; char ')'
---            ; parens
---            }
---        <|> return ()
 
 parseProgram :: Parser Program
 parseProgram = do

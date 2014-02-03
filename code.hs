@@ -3,6 +3,8 @@ module Code (
     destToBinary,
     compToBinary,
     jumpToBinary,
+    aToBinary,
+    cToBinary
     ) where
 
 import Parser
@@ -70,13 +72,24 @@ jumpToBinary k = Map.findWithDefault "000" k jumpTable
 isNumeric :: String -> Bool
 isNumeric s = length (dropWhile (\x -> isDigit x) s) == 0
 
-cToBinary :: Instruction -> String
+cToBinary :: [Register] -> Comp -> (Maybe Jump) -> String
 cToBinary d c j = destToBinary d ++ compToBinary c ++ jumpToBinary j
 
-aToBinary :: String -> SymbolTable -> String
-aToBinary s symTable 
-  | isNumeric s = (prefix base) ++ base
-  | member symTable = (prefix )++ lookup s symTable
-  | otherwise = prefix ++ base
-  where base    = numToBinary s
-        prefix  = take (16 - length base) $ repeat '0'
+aToBinary :: String -> SymbolTable -> Maybe String
+aToBinary s symTable
+  | isNumeric s     = Just $ prefix s ++ numToBin s
+  | otherwise       = maybe "" id (Map.lookup symTable s)
+  where prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
+
+--aToBinary :: String -> Int -> SymbolTable -> (String, SymbolTable, Int)
+--aToBinary str idx symTable
+---- e.g @123
+--  | isNumeric str           = (convert str, symTable, idx)
+--  --e.g @sum && in symbol table
+--  | Map.member str symTable = (maybe "" id (Map.lookup str symTable), symTable, idx)
+--  -- e.g @sum && not in symbol table
+--  --      add {sum: idx} to table
+--  | otherwise             = (convert $ show (idx + 1), Map.insert str (convert $ show (idx + 1)) symTable, idx + 1)
+--  where 
+--    prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
+--    convert v = (prefix v ++ numToBin v)

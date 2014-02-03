@@ -1,6 +1,7 @@
 module Symbol (
   symbolTable,
-  SymbolTable
+  SymbolTable,
+  numToBin
   ) where
 
 import Numeric
