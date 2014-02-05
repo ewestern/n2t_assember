@@ -30,7 +30,7 @@ M=!M
 A=M+1
 A=A+1
 D=M
-@0
+@SCREEN
 AM=M+1
 A=A-1
 M=D

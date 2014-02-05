@@ -27,17 +27,25 @@ compTable = Map.fromList [
                       (Comp Nothing Nothing  Nothing (Just One), "111111"), -- 1                      
                       (Comp Nothing (Just Minus) Nothing (Just One), "111010"), -- -1                      
                       (Comp (Just D) Nothing Nothing  Nothing, "001100"), --D
-                      (Comp (Just A) Nothing Nothing Nothing, "110000"), -- A                  
-                      (Comp (Just D) (Just Not) Nothing  Nothing, "001101"), -- !D
-                      (Comp (Just A) (Just Not) Nothing Nothing, "110001"), --  !A
-                      (Comp (Just D) (Just Minus) Nothing Nothing, "001111"), -- -D
-                      (Comp (Just A) (Just Minus) Nothing Nothing, "110011"), -- -A
+                      (Comp (Just A) Nothing Nothing Nothing, "110000"), -- A     
+                      (Comp Nothing (Just Not) (Just D) Nothing, "001101"), -- !D
+                      (Comp Nothing (Just Not) (Just A) Nothing, "110001"), --  !A
+                      (Comp Nothing (Just Minus) (Just D) Nothing, "001111"), -- -D
+                      (Comp Nothing (Just Minus) (Just A) Nothing, "110011"), -- -A
+
+                      --(Comp (Just D) (Just Not) Nothing  Nothing, "001101"), -- !D
+                      --(Comp (Just A) (Just Not) Nothing Nothing, "110001"), --  !A
+                      --(Comp (Just D) (Just Minus) Nothing Nothing, "001111"), -- -D
+                      --(Comp (Just A) (Just Minus) Nothing Nothing, "110011"), -- -A
+
                       (Comp (Just D) (Just Plus) Nothing (Just One), "011111"), -- D+1
                       (Comp (Just A) (Just Plus) Nothing (Just One), "110111"), -- A+1
                       (Comp (Just D) (Just Minus) Nothing (Just One), "001110"), -- D-1
                       (Comp (Just A) (Just Minus) Nothing (Just One), "110010"), -- A-1
-                      (Comp (Just D) (Just Plus) (Just A) Nothing, "110010"), -- D+A
-                      (Comp (Just A) (Just Plus) (Just D) Nothing, "110010"), -- A+D
+                      (Comp (Just D) (Just Plus) (Just A) Nothing, "000010"), -- D+A
+                      (Comp (Just A) (Just Plus) (Just D) Nothing, "000010"), -- A+D
+                      --(Comp (Just D) (Just Plus) (Just A) Nothing, "110010"), -- D+A
+                      --(Comp (Just A) (Just Plus) (Just D) Nothing, "110010"), -- A+D
                       (Comp (Just D) (Just Minus) (Just A) Nothing, "010011"), -- D-A
                       (Comp (Just A) (Just Minus) (Just D) Nothing, "000111"), -- A-D
                       (Comp (Just D) (Just And) (Just A) Nothing, "000000"), -- D&A
@@ -80,16 +88,3 @@ aToBinary s symTable
   | isNumeric s     = Just $ prefix s ++ numToBin s
   | otherwise       = Map.lookup s symTable
   where prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
-
---aToBinary :: String -> Int -> SymbolTable -> (String, SymbolTable, Int)
---aToBinary str idx symTable
----- e.g @123
---  | isNumeric str           = (convert str, symTable, idx)
---  --e.g @sum && in symbol table
---  | Map.member str symTable = (maybe "" id (Map.lookup str symTable), symTable, idx)
---  -- e.g @sum && not in symbol table
---  --      add {sum: idx} to table
---  | otherwise             = (convert $ show (idx + 1), Map.insert str (convert $ show (idx + 1)) symTable, idx + 1)
---  where 
---    prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
---    convert v = (prefix v ++ numToBin v)
