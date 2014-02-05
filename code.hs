@@ -78,7 +78,7 @@ cToBinary d c j = destToBinary d ++ compToBinary c ++ jumpToBinary j
 aToBinary :: String -> SymbolTable -> Maybe String
 aToBinary s symTable
   | isNumeric s     = Just $ prefix s ++ numToBin s
-  | otherwise       = maybe "" id (Map.lookup symTable s)
+  | otherwise       = Map.lookup s symTable
   where prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
 
 --aToBinary :: String -> Int -> SymbolTable -> (String, SymbolTable, Int)

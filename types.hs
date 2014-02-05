@@ -12,7 +12,6 @@ data Operator = Plus | Minus | Or | And | Not deriving (Show, Eq, Ord)
 data Register = A | M | D  deriving (Show, Eq, Ord)
 data Bin = Zero | One deriving (Show, Eq, Ord)
 data Jump = JGT | JEQ | JGE | JLT | JNE | JLE | JMP deriving (Show, Eq, Ord)
-data Pseudo = Pseudo String
 
 data Comp = Comp {
   reg1 :: Maybe Register,

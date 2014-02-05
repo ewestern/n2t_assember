@@ -14,11 +14,6 @@ import Text.Parsec.Language
 import Numeric
 import Data.Char
 
---class Prim a where
---  makeComp      :: a -> Comp
---  extendComp    :: Comp -> a -> Comp
-
-
 langdef :: LanguageDef a
 langdef = emptyDef { P.commentStart    = "/*"
                    , P.commentEnd      = "*/"
@@ -41,10 +36,13 @@ reserved    = P.reserved lexer
 reservedOp  = P.reservedOp lexer
 operator    = P.operator lexer
 
+sWord :: Parser String
+sWord = many (alphaNum <|> char '_' <|> char '.' <|> char '$')
+
 parseAInst :: Parser Instruction
 parseAInst = do
     char '@'
-    x <- many1 alphaNum
+    x <- sWord
     return $ AInstruction x
     <?> "parse AInst"
 
@@ -115,7 +113,7 @@ parseCInst = do
 
 parsePseudo :: Parser Instruction
 parsePseudo =  do
-  value <- parens $ many1 letter
+  value <- parens $ sWord
   return $ Pseudo value
 
 
