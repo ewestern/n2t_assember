@@ -81,7 +81,7 @@ isNumeric :: String -> Bool
 isNumeric s = length (dropWhile (\x -> isDigit x) s) == 0
 
 cToBinary :: [Register] -> Comp -> (Maybe Jump) -> String
-cToBinary d c j = destToBinary d ++ compToBinary c ++ jumpToBinary j
+cToBinary d c j = compToBinary c ++ destToBinary d ++ jumpToBinary j
 
 aToBinary :: String -> SymbolTable -> Maybe String
 aToBinary s symTable
