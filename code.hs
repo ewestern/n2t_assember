@@ -4,17 +4,18 @@ module Code (
     compToBinary,
     jumpToBinary,
     aToBinary,
-    cToBinary
+    cToBinary,
+    numToBin
     ) where
 
 import Parser
 import Types
 import Numeric
 import Data.Char
-import Symbol
+--import Symbol
 import qualified Data.Map as Map
+import qualified Data.HashTable.IO as H
 
-type Table k v = Map.Map k v
 
 
 destToBinary :: [Register] -> String
@@ -32,20 +33,12 @@ compTable = Map.fromList [
                       (Comp Nothing (Just Not) (Just A) Nothing, "110001"), --  !A
                       (Comp Nothing (Just Minus) (Just D) Nothing, "001111"), -- -D
                       (Comp Nothing (Just Minus) (Just A) Nothing, "110011"), -- -A
-
-                      --(Comp (Just D) (Just Not) Nothing  Nothing, "001101"), -- !D
-                      --(Comp (Just A) (Just Not) Nothing Nothing, "110001"), --  !A
-                      --(Comp (Just D) (Just Minus) Nothing Nothing, "001111"), -- -D
-                      --(Comp (Just A) (Just Minus) Nothing Nothing, "110011"), -- -A
-
                       (Comp (Just D) (Just Plus) Nothing (Just One), "011111"), -- D+1
                       (Comp (Just A) (Just Plus) Nothing (Just One), "110111"), -- A+1
                       (Comp (Just D) (Just Minus) Nothing (Just One), "001110"), -- D-1
                       (Comp (Just A) (Just Minus) Nothing (Just One), "110010"), -- A-1
                       (Comp (Just D) (Just Plus) (Just A) Nothing, "000010"), -- D+A
                       (Comp (Just A) (Just Plus) (Just D) Nothing, "000010"), -- A+D
-                      --(Comp (Just D) (Just Plus) (Just A) Nothing, "110010"), -- D+A
-                      --(Comp (Just A) (Just Plus) (Just D) Nothing, "110010"), -- A+D
                       (Comp (Just D) (Just Minus) (Just A) Nothing, "010011"), -- D-A
                       (Comp (Just A) (Just Minus) (Just D) Nothing, "000111"), -- A-D
                       (Comp (Just D) (Just And) (Just A) Nothing, "000000"), -- D&A
@@ -83,8 +76,11 @@ isNumeric s = length (dropWhile (\x -> isDigit x) s) == 0
 cToBinary :: [Register] -> Comp -> (Maybe Jump) -> String
 cToBinary d c j = compToBinary c ++ destToBinary d ++ jumpToBinary j
 
-aToBinary :: String -> SymbolTable -> Maybe String
-aToBinary s symTable
+numToBin :: String -> String
+numToBin s = showIntAtBase 2 intToDigit (read s) ""
+
+aToBinary :: String -> Maybe String
+aToBinary s
   | isNumeric s     = Just $ prefix s ++ numToBin s
-  | otherwise       = Map.lookup s symTable
+  | otherwise       = Nothing
   where prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
