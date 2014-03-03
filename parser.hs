@@ -15,7 +15,8 @@ import Numeric
 import Data.Char
 
 langdef :: LanguageDef a
-langdef = emptyDef { P.commentStart    = "/*"
+langdef = emptyDef { 
+                    P.commentStart    = "/*"
                    , P.commentEnd      = "*/"
                    , P.commentLine     = "//"
                    , P.identStart       = upper

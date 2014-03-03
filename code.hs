@@ -14,7 +14,7 @@ import Numeric
 import Data.Char
 --import Symbol
 import qualified Data.Map as Map
-import qualified Data.HashTable.IO as H
+--import qualified Data.HashTable.IO as H
 
 
 
@@ -80,7 +80,7 @@ numToBin :: String -> String
 numToBin s = showIntAtBase 2 intToDigit (read s) ""
 
 aToBinary :: String -> Maybe String
-aToBinary s
+aToBinary s 
   | isNumeric s     = Just $ prefix s ++ numToBin s
-  | otherwise       = Nothing
-  where prefix v = take (16 - (length $ numToBin v)) $ repeat '0'
+  | otherwise       =  Nothing
+  where prefix v = replicate (16 - (length $ numToBin v)) '0'

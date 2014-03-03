@@ -6,16 +6,13 @@ module Types (
   Bin(..),
   Jump(..),
   Program(..),
-  SymbolTable,
   Table,
   AssembleState
   ) where
-
-import qualified Data.HashTable.IO as H
 import qualified Data.Map as M
-type SymbolTable = H.BasicHashTable String String
-type Table k v = M.Map k v
-type AssembleState = (String, SymbolTable, Int)
+
+type Table k v= M.Map k v
+type AssembleState = ([String], Int)
 data Operator = Plus | Minus | Or | And | Not deriving (Show, Eq, Ord)
 data Register = A | M | D  deriving (Show, Eq, Ord)
 data Bin = Zero | One deriving (Show, Eq, Ord)
